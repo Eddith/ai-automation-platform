@@ -1,0 +1,12 @@
+/node_modules
+/dist
+/build
+/coverage
+/logs
+/tmp
+/n8n/custom-nodes/AiPromptNode/node_modules
+/n8n/custom-nodes/AiPromptNode/dist
+/n8n/custom-nodes/AiPromptNode/build
+/n8n/custom-nodes/AiPromptNode/coverage
+/n8n/custom-nodes/AiPromptNode/logs
+/n8n/custom-nodes/AiPromptNode/tmp

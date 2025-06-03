@@ -1,0 +1,64 @@
+{
+  "name": "AI Email Auto Reply",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "ai-email-reply",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "prompt": "=Bu bir e-posta mesajıdır:\n\n{{$json[\"body\"]}}\n\nBu e-postaya uygun profesyonel bir Türkçe cevap üret."
+      },
+      "id": "aiPromptNode",
+      "name": "AI Prompt Node",
+      "type": "n8n-nodes-base.aiPromptNode",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://your-mail-api.com/send",
+        "method": "POST",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"to\": \"{{$json[\"sender\"]}}\",\n  \"subject\": \"RE: {{$json[\"subject\"]}}\",\n  \"body\": \"{{$node[\"AI Prompt Node\"].json[\"choices\"][0][\"message\"][\"content\"]}}\"\n}"
+      },
+      "id": "sendEmail",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Prompt Node",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Prompt Node": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

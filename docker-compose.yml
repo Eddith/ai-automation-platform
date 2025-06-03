@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  n8n:
+    image: n8nio/n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=admin
+      - N8N_HOST=localhost
+    volumes:
+      - ./n8n:/home/node/.n8n
+    depends_on:
+      - llm-proxy
+
+  llm-proxy:
+    build:
+      context: ./services/llm-proxy-go
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
